@@ -9,7 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    // MARK: - Outlets
+    // MARK: -  Outlets
 
     // MARK: - Variable Decleration
 

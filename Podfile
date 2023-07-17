@@ -9,6 +9,7 @@ target 'PropeliusTask' do
   pod 'Alamofire'
   pod 'SVProgressHUD'
   pod 'Kingfisher', '~> 7.0'
-
+  pod 'FloatRatingView', '~> 4.0'
+  pod 'IQKeyboardManagerSwift'
 
 end

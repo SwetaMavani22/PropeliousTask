@@ -35,6 +35,163 @@ extension UITextField {
     }
 }
 
+extension UIView {
+    
+    @IBInspectable
+    /// Should the corner be as circle
+    public var circleCorner: Bool {
+        get {
+            return min(bounds.size.height, bounds.size.width) / 2 == cornerRadius
+        }
+        set {
+            cornerRadius = newValue ? min(bounds.size.height, bounds.size.width) / 2 : cornerRadius
+        }
+    }
+        
+    @IBInspectable
+    /// Shadow path of view; also inspectable from Storyboard.
+    public var shadowPath: CGPath? {
+        get {
+            return layer.shadowPath
+        }
+        set {
+            layer.shadowPath = newValue
+        }
+    }
+    
+    @IBInspectable
+    /// Should shadow rasterize of view; also inspectable from Storyboard.
+    /// cache the rendered shadow so that it doesn't need to be redrawn
+    public var shadowShouldRasterize: Bool {
+        get {
+            return layer.shouldRasterize
+        }
+        set {
+            layer.shouldRasterize = newValue
+        }
+    }
+    
+    @IBInspectable
+    /// Should shadow rasterize of view; also inspectable from Storyboard.
+    /// cache the rendered shadow so that it doesn't need to be redrawn
+    public var shadowRasterizationScale: CGFloat {
+        get {
+            return layer.rasterizationScale
+        }
+        set {
+            layer.rasterizationScale = newValue
+        }
+    }
+    
+    @IBInspectable
+    /// Corner radius of view; also inspectable from Storyboard.
+    public var maskToBounds: Bool {
+        get {
+            return layer.masksToBounds
+        }
+        set {
+            layer.masksToBounds = newValue
+        }
+    }
+    
+    /// Size of view.
+    public var size: CGSize {
+        get {
+            return self.frame.size
+        }
+        set {
+            self.width = newValue.width
+            self.height = newValue.height
+        }
+    }
+    
+    /// Width of view.
+    public var width: CGFloat {
+        get {
+            return self.frame.size.width
+        }
+        set {
+            self.frame.size.width = newValue
+        }
+    }
+    
+    /// Height of view.
+    public var height: CGFloat {
+        get {
+            return self.frame.size.height
+        }
+        set {
+            self.frame.size.height = newValue
+        }
+    }
+    
+    func superview<T>(of type: T.Type) -> T? {
+        return superview as? T ?? superview.flatMap { $0.superview(of: T.self) }
+    }
+    
+    public typealias Configuration = (UIView) -> Swift.Void
+    
+    public func config(configurate: Configuration?) {
+        configurate?(self)
+    }
+    
+    /// Set some or all corners radiuses of view.
+    ///
+    /// - Parameters:
+    ///   - corners: array of corners to change (example: [.bottomLeft, .topRight]).
+    ///   - radius: radius for selected corners.
+    public func roundCorners(_ corners: UIRectCorner, radius: CGFloat) {
+        let maskPath = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        let shape = CAShapeLayer()
+        shape.path = maskPath.cgPath
+        layer.mask = shape
+    }
+    
+    func searchVisualEffectsSubview() -> UIVisualEffectView? {
+        if let visualEffectView = self as? UIVisualEffectView {
+            return visualEffectView
+        } else {
+            for subview in subviews {
+                if let found = subview.searchVisualEffectsSubview() {
+                    return found
+                }
+            }
+        }
+        return nil
+    }
+    
+    /// This is the function to get subViews of a view of a particular type
+    func subViews<T : UIView>(type : T.Type) -> [T]{
+        var all = [T]()
+        for view in self.subviews {
+            if let aView = view as? T{
+                all.append(aView)
+            }
+        }
+        return all
+    }
+    
+    
+    /// This is a function to get subViews of a particular type from view recursively. It would look recursively in all subviews and return back the subviews of the type T
+    func allSubViewsOf<T : UIView>(type : T.Type) -> [T]{
+        var all = [T]()
+        func getSubview(view: UIView) {
+            if let aView = view as? T{
+                all.append(aView)
+            }
+            guard view.subviews.count>0 else { return }
+            view.subviews.forEach{ getSubview(view: $0) }
+        }
+        getSubview(view: self)
+        return all
+    }
+    
+    func blink() {
+        self.alpha = 0.2
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveLinear, .repeat, .autoreverse], animations: {self.alpha = 1.0}, completion: nil)
+    }
+}
+
 extension NSMutableAttributedString
 {
     public convenience init?(HTMLString html: String, font: UIFont? = nil) throws {
@@ -67,7 +224,8 @@ extension String {
 
     mutating func capitalizeFirstLetter() {
         self = self.capitalizingFirstLetter()
-    }}
+    }
+}
 
 extension Int {
     var doubleValue: Double? {
@@ -78,6 +236,27 @@ extension Int {
     }
     var integerValue: Int? {
         return Int(self)
+    }
+}
+
+extension UIColor {
+    //it method convert hexa code to RGB
+    convenience init(hexString: String, alpha: CGFloat = 1.0) {
+        let hexString: String = hexString.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        let scanner = Scanner(string: hexString)
+        if (hexString.hasPrefix("#")) {
+            scanner.scanLocation = 1
+        }
+        var color: UInt32 = 0
+        scanner.scanHexInt32(&color)
+        let mask = 0x000000FF
+        let r = Int(color >> 16) & mask
+        let g = Int(color >> 8) & mask
+        let b = Int(color) & mask
+        let red   = CGFloat(r) / 255.0
+        let green = CGFloat(g) / 255.0
+        let blue  = CGFloat(b) / 255.0
+        self.init(red:red, green:green, blue:blue, alpha:alpha)
     }
 }
 
@@ -215,21 +394,6 @@ func checkPermission(name:String, vc:UIViewController) -> Bool {
     return false
 }
 
-func ShowErrorAlert(appName : String , msg : String , controller : UIViewController) {
-    
-    let refreshAlert = UIAlertController(title: appName, message: msg, preferredStyle: UIAlertController.Style.alert)
-
-    refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
-          print("Handle Ok logic here")
-    }))
-
-    /*refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
-          print("Handle Cancel Logic here")
-    }))*/
-
-    controller.present(refreshAlert, animated: true, completion: nil)
-}
-
 extension UITextField {
     func togglePasswordVisibility() {
         isSecureTextEntry = !isSecureTextEntry
@@ -298,7 +462,7 @@ extension NSMutableAttributedString {
     
     func setUnderlineForText(textForAttribute: String) {
         let range: NSRange = self.mutableString.range(of: textForAttribute, options: .caseInsensitive)
-        self.addAttributes([.underlineStyle: NSUnderlineStyle.single.rawValue, .font:UIFont.systemFont(ofSize: 15.0)], range: range)
+        self.addAttributes([.underlineStyle: NSUnderlineStyle.single.rawValue, .font:UIFont.systemFont(ofSize: 15.0, weight: .medium)], range: range)
     }
 }
 
@@ -308,18 +472,15 @@ func showProgress(_ message: String,isBackShow:Bool = false) {
     {
         SVProgressHUD.setDefaultMaskType(.custom)
         SVProgressHUD.setForegroundColor(UIColor.black)
-        //SVProgressHUD.setForegroundColor(UIColor(hexString: colors.themeColor))
     }
     if (message == "") {
         SVProgressHUD.setDefaultMaskType(.custom)
-        //SVProgressHUD.setForegroundColor(UIColor(hexString: colors.themeColor))
         SVProgressHUD.setForegroundColor(UIColor.black)
         SVProgressHUD.setRingThickness(2.0)
         SVProgressHUD.show()
     }
     else {
         SVProgressHUD.setDefaultMaskType(.custom)
-        //SVProgressHUD.setForegroundColor(UIColor(hexString: colors.themeColor))
         SVProgressHUD.setForegroundColor(UIColor.black)
         SVProgressHUD.show(withStatus: message)
     }
@@ -328,39 +489,3 @@ func showProgress(_ message: String,isBackShow:Bool = false) {
 func dismissProgress() {
     SVProgressHUD.dismiss()
 }
-
-extension Array where Element: Hashable {
-    func removingDuplicates() -> [Element] {
-        var addedDict = [Element: Bool]()
-
-        return filter {
-            addedDict.updateValue(true, forKey: $0) == nil
-        }
-    }
-
-    mutating func removeDuplicates() {
-        self = self.removingDuplicates()
-    }
-}
-
-extension UITableView {
-
-    func setEmptyMessage(_ message: String) {
-        let messageLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height))
-        messageLabel.text = message
-        messageLabel.textColor = .black
-        messageLabel.numberOfLines = 0
-        messageLabel.textAlignment = .center
-        messageLabel.font = UIFont(name: "TrebuchetMS", size: 15)
-        messageLabel.sizeToFit()
-
-        self.backgroundView = messageLabel
-        self.separatorStyle = .none
-    }
-
-    func restore() {
-        self.backgroundView = nil
-        self.separatorStyle = .singleLine
-    }
-}
-

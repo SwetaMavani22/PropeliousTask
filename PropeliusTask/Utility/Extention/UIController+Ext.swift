@@ -11,10 +11,15 @@ import CoreData
 
 extension UIViewController {
     
-    func gotoDetailVC(data :  ModelPhotos) {
-        let vc = UIStoryboard.instantiateViewController(storyborad: .main, withViewClass: DetailVC.self)
+     func gotoProductDetailVC(data :  ModelProducts) {
+        let vc = UIStoryboard.instantiateViewController(storyborad: .main, withViewClass: ProductDetailVC.self)
         vc.selectedData = data
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
+    func gotoCartVC() {
+       let vc = UIStoryboard.instantiateViewController(storyborad: .main, withViewClass: CartVC.self)
+       self.navigationController?.pushViewController(vc, animated: true)
+   }
+
 }

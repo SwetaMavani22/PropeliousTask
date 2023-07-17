@@ -10,5 +10,5 @@ import Foundation
 
 struct API_URL {
     
-    static let BaseUrl = "https://jsonplaceholder.typicode.com/photos?albumId="
+    static let BaseUrl = "https://fakestoreapi.com/products"
 }
