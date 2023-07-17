@@ -22,9 +22,13 @@
 		758010772A659C7000ECCC50 /* CoreDatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758010752A659C6F00ECCC50 /* CoreDatabaseManager.swift */; };
 		758010782A659C7000ECCC50 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758010762A659C6F00ECCC50 /* APIManager.swift */; };
 		7580107C2A659CCE00ECCC50 /* ModelPhotos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7580107B2A659CCE00ECCC50 /* ModelPhotos.swift */; };
+		F5848536F3FD6B063A4AFA6A /* Pods_PropeliusTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6039C9CDAF40663EF08452E5 /* Pods_PropeliusTask.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2501F883906827A1159F9444 /* Pods-PropeliusTask.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PropeliusTask.release.xcconfig"; path = "Target Support Files/Pods-PropeliusTask/Pods-PropeliusTask.release.xcconfig"; sourceTree = "<group>"; };
+		3A8EE7FCB6D689111BEF0D7C /* Pods-PropeliusTask.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PropeliusTask.debug.xcconfig"; path = "Target Support Files/Pods-PropeliusTask/Pods-PropeliusTask.debug.xcconfig"; sourceTree = "<group>"; };
+		6039C9CDAF40663EF08452E5 /* Pods_PropeliusTask.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PropeliusTask.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		758010482A659BAB00ECCC50 /* PropeliusTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PropeliusTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7580104B2A659BAB00ECCC50 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7580104D2A659BAB00ECCC50 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -49,17 +53,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5848536F3FD6B063A4AFA6A /* Pods_PropeliusTask.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1681AE61B4BF6CE4C88A8619 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3A8EE7FCB6D689111BEF0D7C /* Pods-PropeliusTask.debug.xcconfig */,
+				2501F883906827A1159F9444 /* Pods-PropeliusTask.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		6A3720845726758EDCC520BB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6039C9CDAF40663EF08452E5 /* Pods_PropeliusTask.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		7580103F2A659BAB00ECCC50 = {
 			isa = PBXGroup;
 			children = (
 				7580104A2A659BAB00ECCC50 /* PropeliusTask */,
 				758010492A659BAB00ECCC50 /* Products */,
+				1681AE61B4BF6CE4C88A8619 /* Pods */,
+				6A3720845726758EDCC520BB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -181,9 +206,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7580105F2A659BAD00ECCC50 /* Build configuration list for PBXNativeTarget "PropeliusTask" */;
 			buildPhases = (
+				86B92E059F2816545C7121B9 /* [CP] Check Pods Manifest.lock */,
 				758010442A659BAB00ECCC50 /* Sources */,
 				758010452A659BAB00ECCC50 /* Frameworks */,
 				758010462A659BAB00ECCC50 /* Resources */,
+				9A2842FD20BDA66D8D46E607 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -239,6 +266,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		86B92E059F2816545C7121B9 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PropeliusTask-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9A2842FD20BDA66D8D46E607 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PropeliusTask/Pods-PropeliusTask-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PropeliusTask/Pods-PropeliusTask-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PropeliusTask/Pods-PropeliusTask-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		758010442A659BAB00ECCC50 /* Sources */ = {
@@ -400,6 +469,7 @@
 		};
 		758010602A659BAD00ECCC50 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3A8EE7FCB6D689111BEF0D7C /* Pods-PropeliusTask.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -427,6 +497,7 @@
 		};
 		758010612A659BAD00ECCC50 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2501F883906827A1159F9444 /* Pods-PropeliusTask.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

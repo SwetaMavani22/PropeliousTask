@@ -1,0 +1,6 @@
+framework module Pods_PropeliusTask {
+  umbrella header "Pods-PropeliusTask-umbrella.h"
+
+  export *
+  module * { export * }
+}
